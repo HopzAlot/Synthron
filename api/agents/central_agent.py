@@ -6,7 +6,7 @@ from api.agents.motherboard_agent import MotherboardAgent
 from api.agents.ram_agent import RAMAgent
 from api.agents.storage_agent import STORAGEAgent
 from api.compatibility_checker import check_compatibility
-from api.agents.llama import generate_llama_response
+from api.agents.llama import generate_llama_response  # <-- make this sync!
 
 class CentralAgent:
     def __init__(self, prompt):
@@ -17,7 +17,6 @@ class CentralAgent:
 
     def safe_json_parse(self, json_string):
         try:
-            # Extract the first valid JSON object using regex
             match = re.search(r'\{.*?\}', self.clean_llama_output(json_string), re.DOTALL)
             if match:
                 return json.loads(match.group(0))
@@ -37,7 +36,7 @@ Respond only with valid minified JSON like:
 
 No markdown, no explanations, no comments. If extraction fails, return: {{}}
 """
-        llama_response = generate_llama_response(prompt_text)
+        llama_response = generate_llama_response(prompt_text)  # sync call
         print("LLaMA response:", llama_response)
         return self.safe_json_parse(llama_response)
 
@@ -69,7 +68,6 @@ No markdown, no explanations, no comments. If extraction fails, return: {{}}
             ).recommend()
         )
 
-        # Normalize GPU as a list
         if not isinstance(gpu, list):
             gpu = [gpu]
 
@@ -97,7 +95,6 @@ No markdown, no explanations, no comments. If extraction fails, return: {{}}
         issues = check_compatibility(cpu, ram, motherboard, gpu) or []
 
         if total_cost > budget:
-            return CentralAgent.run(self)
             issues.append(f"Total build cost ${total_cost:.2f} exceeds your budget of ${budget:.2f}.")
 
         consolidated_input = json.dumps({
@@ -111,9 +108,8 @@ No markdown, no explanations, no comments. If extraction fails, return: {{}}
 
         summary_prompt = f"Here is the build info: {consolidated_input}. Write a detailed but user-friendly summary for the user."
         summary = generate_llama_response(summary_prompt)
-
         return {
-            "summary": summary,
+            "summary": summary or "No summary generated.",
             "build": {
                 "CPU": cpu,
                 "GPU": gpu,

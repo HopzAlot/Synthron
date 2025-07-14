@@ -1,8 +1,8 @@
-import requests
+import httpx
 
 def generate_llama_response(prompt, model="llama3.2"):
     if not prompt:
-        raise ValueError("Prompt is required.")
+        return "⚠️ No prompt provided"
 
     ollama_url = "http://localhost:11434/api/generate"
     payload = {
@@ -11,7 +11,13 @@ def generate_llama_response(prompt, model="llama3.2"):
         "stream": False
     }
 
-    response = requests.post(ollama_url, json=payload)
-    response.raise_for_status()  # will raise HTTPError for bad status
-    result = response.json().get("response", "")
-    return result
+    try:
+        response = httpx.post(ollama_url, json=payload, timeout=50)
+        response.raise_for_status()
+        result = response.json().get("response", "")
+        if not result:
+            print("⚠️ LLaMA response was empty.")
+        return result.strip()
+    except Exception as e:
+        print(f"❌ Error in generate_llama_response: {e}")
+        return f"⚠️ Could not generate summary due to error: {e}"

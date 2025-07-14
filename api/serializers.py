@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import BuildRequest
-class BuildRequestSerializer(serializers.ModelSerializer):
+from .models import RequestBuild
+class RequestBuildSerializer(serializers.ModelSerializer):
     class Meta:
-        model= BuildRequest
+        model= RequestBuild
         fields='__all__'

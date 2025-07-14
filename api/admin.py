@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import BuildRequest
+from .models import RequestBuild
 # Register your models here.
-admin.site.register(BuildRequest)
+admin.site.register(RequestBuild)
