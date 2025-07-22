@@ -42,9 +42,11 @@ No markdown, no explanations, no comments. If extraction fails, return: {{}}
 
     def get_price(self, component):
         try:
-            return float(component.get('price', 0))
-        except (ValueError, TypeError, AttributeError):
+             price = component.get('price', 0)
+             return float(price) if isinstance(price, (int, float, str)) and str(price).replace('.', '', 1).isdigit() else 0
+        except Exception:
             return 0
+
 
     def run(self):
         parsed = self.parse_prompt()

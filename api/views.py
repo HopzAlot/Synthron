@@ -85,12 +85,12 @@ class LogoutView(APIView):
 
         return response
     
-# class GetDataView(APIView):
-#     permission_classes=[IsAuthenticated]
-#     def get(self, request):
-#         data = BuildRequest.objects.all()
-#         serializer = BuildRequestSerializer(data, many=True)
-#         return Response(serializer.data)
+class GetDataView(APIView):
+    permission_classes=[AllowAny]
+    def get(self, request):
+        data = RequestBuild.objects.all()
+        serializer = RequestBuildSerializer(data, many=True)
+        return Response(serializer.data)
 
 
 class ConfigureBuildView(APIView):
