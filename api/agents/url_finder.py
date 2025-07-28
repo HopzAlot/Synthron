@@ -59,7 +59,7 @@ def find_product_urls(query: str) -> dict:
 
         all_links = extract_links(data)
         trusted_links = [url for url in all_links if is_trusted_url(url)]
-        trusted_links = list(dict.fromkeys(trusted_links))[:3]  # Dedup & cap
+        trusted_links = list(dict.fromkeys(trusted_links))[:3]
 
         if not trusted_links:
             return {"url": None, "price": None}

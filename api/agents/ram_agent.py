@@ -10,7 +10,6 @@ class RAMAgent:
         self.preferences = preferences or {}
 
     def recommend(self):
-        # Step 1: Ask LLaMA for RAM name
         name_prompt = f"""
 You're a PC building expert.
 
@@ -24,12 +23,16 @@ Use case: {self.use_case}
         raw_name = generate_llama_response(name_prompt)
         ram_name = raw_name.strip().strip('"')
 
-        # Step 2: Find product info via scraping
+       
         product_data = find_product_urls(f"{ram_name} buy online in {self.region}")
         url = product_data.get("url") or "https://example.com"
         price = product_data.get("price")
+        vendor=product_data.get('vendor') or 'not provided'
+        performance=product_data.get('performance')
+        ram_type=product_data.get('ram_type')
+        name=product_data.get('name')
 
-        # Step 3: Ask LLM to generate specs JSON
+        
         details_prompt = f"""
 You are a PC building expert.
 
@@ -40,16 +43,16 @@ The actual price listed there is: {price if price is not None else "null"}
 
 
 
-Return a valid minified JSON with realistic specs, using the given price and URL.
+Return a valid minified JSON with realistic specs, using the given details.
 
 Format:
 {{
-    "name": "{ram_name}",
-    "ram_type": "...",
+    "name": "{name}" or "not provided",
+    "ram_type": "{ram_type}" or "not provided",
     "price": {price if price else "null"},
-    "performance": ...,
-    "vendor": "...",
-    "url": "{url}"
+    "performance":'{performance}' or "not provided",
+    "vendor": "{vendor}" or "not provided",
+    "url": "{url}" or "not provided"
 }}
 
 Only return JSON. No explanation.

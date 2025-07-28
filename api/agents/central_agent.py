@@ -6,7 +6,7 @@ from api.agents.motherboard_agent import MotherboardAgent
 from api.agents.ram_agent import RAMAgent
 from api.agents.storage_agent import STORAGEAgent
 from api.compatibility_checker import check_compatibility
-from api.agents.llama import generate_llama_response  # <-- make this sync!
+from api.agents.llama import generate_llama_response 
 
 class CentralAgent:
     def __init__(self, prompt):
@@ -36,7 +36,7 @@ Respond only with valid minified JSON like:
 
 No markdown, no explanations, no comments. If extraction fails, return: {{}}
 """
-        llama_response = generate_llama_response(prompt_text)  # sync call
+        llama_response = generate_llama_response(prompt_text)  
         print("LLaMA response:", llama_response)
         return self.safe_json_parse(llama_response)
 

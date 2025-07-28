@@ -1,5 +1,5 @@
-from api.agents.llama import generate_llama_response  # ✅ synchronous version
-from api.agents.url_finder import find_product_urls   # ✅ synchronous version
+from api.agents.llama import generate_llama_response 
+from api.agents.url_finder import find_product_urls  
 import json
 
 class GPUAgent:
@@ -10,7 +10,6 @@ class GPUAgent:
         self.preferences = preferences or {}
 
     def recommend(self):
-        # Step 1: Ask LLM for GPU name (sync)
         name_prompt = f"""
 You're a PC building expert.
 
@@ -24,12 +23,16 @@ Use case: {self.use_case}
         raw_name = generate_llama_response(name_prompt)
         gpu_name = raw_name.strip().strip('"')
 
-        # Step 2: Find product URL + price (sync)
         product_data = find_product_urls(f"{gpu_name} buy online in {self.region}")
         url = product_data.get("url") or "https://example.com"
         price = product_data.get("price")
+        power_draw= product_data.get('power_draw')
+        vendor=product_data.get('vendor') or 'not provided'
+        performance=product_data.get('performance')
+        name=product_data.get('name')
 
-        # Step 3: Ask LLM for structured GPU details (sync)
+
+        
         details_prompt = f"""
 You are a PC building expert.
 
@@ -38,16 +41,16 @@ Here is a GPU: "{gpu_name}"
 The product was found at: {url}
 The actual price listed there is: {price if price is not None else "null"}
 
-Now based on this, return a valid, minified JSON object with realistic specs. Use the provided price and URL directly.
+Now based on this, return a valid, minified JSON object with realistic specs. Use the provided details directly.
 
 Format:
 {{
-    "name": "{gpu_name}",
-    "power_draw": 50,
+    "name": "{name}",
+    "power_draw": {power_draw} or 0,
     "price": {price if price is not None else 'null'},
-    "performance": ...,
-    "vendor": "...",
-    "url": "{url}"
+    "performance": "{performance}" or "not provided",
+    "vendor": "{vendor}" or "not provided",
+    "url": "{url}" or "not provided"
 }}
 
 Only return JSON. No explanation.
