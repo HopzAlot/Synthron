@@ -86,6 +86,7 @@ DATABASE_URL=postgres://username:password@localhost:5432/pcbuilder
 ### 3. Run migrations and start server:
 
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
@@ -126,7 +127,7 @@ npm install
 ### 3. Run development server:
 
 ```bash
-npm run dev
+npm start
 ```
 
 ---
