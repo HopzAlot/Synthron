@@ -1,5 +1,5 @@
-from api.agents.llama import generate_llama_response  # sync version
-from api.agents.url_finder import find_product_urls    # sync version
+from api.agents.llama import generate_llama_response 
+from api.agents.url_finder import find_product_urls   
 import json
 
 class STORAGEAgent:

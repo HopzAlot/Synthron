@@ -1,3 +1,5 @@
+#Tried the LLM service but end up using playwright.
+
 from dotenv import load_dotenv
 load_dotenv()
 import os
