@@ -12,7 +12,7 @@ class MotherboardAgent:
         self.required_ram_type = required_ram_type
 
     def recommend(self):
-        # Step 1: Ask LLM for motherboard name only
+        
         name_prompt = f"""
 You're a PC building expert.
 
@@ -29,12 +29,17 @@ Use case: {self.use_case}
         raw_name = generate_llama_response(name_prompt)
         mb_name = raw_name.strip().strip('"')
 
-        # Step 2: Scrape real URL + price
+        
         product_data = find_product_urls(f"{mb_name} buy online in {self.region}")
         url = product_data.get("url") or "https://example.com"
         price = product_data.get("price")
+        socket=product_data.get('socket')
+        vendor=product_data.get('vendor') or 'not provided'
+        performance=product_data.get('performance')
+        name=product_data.get('name')
+        ram_type=product_data.get('ram_type')
 
-        # Step 3: Ask LLM for full specs in JSON
+       
         details_prompt = f"""
 You are a PC building expert.
 
@@ -43,16 +48,17 @@ Here is a Motherboard: "{mb_name}"
 The product was found at: {url}
 The actual price listed there is: {price if price is not None else "null"}
 
-Return a valid minified JSON with specs and price, using the given price and URL.
+Return a valid minified JSON with specs and price, using the given details.
 
 Format:
 {{
-    "name": "{mb_name}",
-    "socket": "{self.required_socket}",
+    "name": "{name}" or "not provided",
+    "socket": "{socket}" or "not provided",
     "price": {price if price is not None else "null"},
-    "ram_type": "{self.required_ram_type}",
-    "vendor": "...",
-    "url": "{url}"
+    "ram_type": "{ram_type}" or "not provided",
+    "vendor": '{vendor}' or "not provided",
+    "performance": '{performance}' or "not provided",
+    "url": "{url}" or "not provided"
 }}
 
 Only return JSON. No explanation.

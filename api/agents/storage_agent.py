@@ -10,7 +10,7 @@ class STORAGEAgent:
         self.preferences = preferences or {}
 
     def recommend(self):
-        # Step 1: Ask LLaMA for best storage device name/model
+        
         name_prompt = f"""
 You're a PC building expert.
 
@@ -24,12 +24,14 @@ Use case: {self.use_case}
         raw_name = generate_llama_response(name_prompt)
         storage_name = raw_name.strip().strip('"')
 
-        # Step 2: Find product URL + price synchronously
+        
         product_data = find_product_urls(f"{storage_name} buy online in {self.region}")
         url = product_data.get("url") or "https://example.com"
         price = product_data.get("price")
-
-        # Step 3: Ask LLaMA for full JSON specs with real price and URL
+        vendor=product_data.get('vendor') or 'not provided'
+        performance=product_data.get('performance')
+        name=product_data.get('name')
+        
         details_prompt = f"""
 You are a PC building expert.
 
@@ -38,14 +40,15 @@ Here is a storage device: "{storage_name}"
 The product was found at: {url}
 The actual price listed there is: {price if price else "unknown"}
 
-Return a valid minified JSON with realistic specs and price, using the given price and URL.
+Return a valid minified JSON with realistic specs and price, using the given details.
 
 Format:
 {{
-    "name": "{storage_name}",
+    "name": "{name}" or "not provided",
     "price": {price if price else "null"},
-    "vendor": "...",
-    "url": "{url}"
+    "performance": '{performance}' or "not provided",
+    "vendor": "{vendor}" or "not provided",
+    "url": "{url}" or "not provided"
 }}
 
 Only return JSON. No explanation.

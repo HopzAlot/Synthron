@@ -10,7 +10,6 @@ class CPUAgent:
         self.use_case = use_case
 
     def recommend(self):
-        # Step 1: Ask LLM for CPU name (sync)
         name_prompt = f"""
 You're a PC building expert.
 
@@ -25,12 +24,14 @@ Suggest the best CPU within this budget, comply with the preference and use-case
         raw_name = generate_llama_response(name_prompt)
         cpu_name = raw_name.strip().strip('"')
 
-        # Step 2: Sync find product URL + price
         product_data = find_product_urls(f"{cpu_name} buy online in {self.region}")
         url = product_data.get("url") or "https://example.com"
         price = product_data.get("price")
+        socket=product_data.get('socket')
+        vendor=product_data.get('vendor') or 'not provided'
+        performance=product_data.get('performance')
+        name=product_data.get('name')
 
-        # Step 3: Ask LLM for details (sync)
         details_prompt = f"""
 You are a PC building expert.
 
@@ -39,16 +40,16 @@ Here is a CPU: "{cpu_name}"
 The product was found at: {url}
 The actual price listed there is: {price if price is not None else "null"}
 
-Now based on this, return a valid, minified JSON object with realistic specs. Use the provided price and URL directly.
+Now based on this, return a valid, minified JSON object with realistic specs. Use the provided details directly.
 
 Format:
 {{
-    "name": "{cpu_name}",
-    "socket": "...",
+    "name": "{name}" or "not provided",
+    "socket": "{socket}" or "not provided",
     "price": {price if price is not None else 'null'},
-    "performance": ...,
-    "vendor": "...",
-    "url": "{url}"
+    "performance": '{performance}' or "not provided",
+    "vendor": "{vendor}" or "not provided",
+    "url": "{url}" or "not provided"
 }}
 
 Only return JSON. No explanation.
