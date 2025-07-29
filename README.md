@@ -175,12 +175,20 @@ npm run start
 - 💸 Integrate Amazon Affiliate tracking
 - 📊 Admin dashboard for scraping diagnostics
 - 🔐 OAuth login support (Google, GitHub)
+- 🛠️ Improving LLM integration and scraping engine.
 
 ---
 
-🛠️ Currently improving LLM integration and scraping engine.
 
----
+## 🧠 What's Next?
+
+I’ll be actively improving Synthron with:
+
+- ✨ More exciting features and enhancements
+- 🛠️ Integration of modern **DevOps tooling and workflows**
+- 🐳 **Containerization** using Docker
+- ⚙️ Implementation of **CI/CD pipelines**
+- 🚀 **Cloud deployment** on **AWS**
 
 
 ---
