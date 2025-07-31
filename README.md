@@ -132,6 +132,15 @@ npm run start
 
 ---
 
+## ⚠️ LLaMA 3.2 Usage
+
+Synthron uses **LLaMA 3.2 locally** for AI prompt parsing.  
+To fully use the project, you'll need to **download and run the LLaMA 3.2 model** locally.  
+Refer to the `llama.py` script for how it's integrated, and ensure your machine meets the requirements for running LLaMA models.
+
+---
+
+
 ## 🔗 How It Works
 
 1. **User Input**: "I want a gaming PC under $1000 in Usa and i prefer an AMD build."
