@@ -1,0 +1,11 @@
+#Docker
+docker-compose.yml
+/frontend/Dockerfile
+/backend/Dockerfile
+
+#llama
+ollama_test
+llama3.2_weights
+
+#environment
+.env
