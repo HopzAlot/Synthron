@@ -1,6 +1,6 @@
 import os
 import httpx
-from api.agents.playwright_scraper import scrape_urls  # Still sync
+from api.agents.playwright_scraper import scrape_urls  
 from dotenv import load_dotenv
 
 load_dotenv()

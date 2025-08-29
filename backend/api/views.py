@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import RequestBuild
 from .serializers import RequestBuildSerializer
-from .agents.central_agent import CentralAgent  # should be sync version
-from .agents.llama import generate_llama_response  # should be sync version
+from .agents.central_agent import CentralAgent  
+from .agents.llama import generate_llama_response 
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny

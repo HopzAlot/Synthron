@@ -3,7 +3,7 @@ import json
 import redis
 from playwright.sync_api import sync_playwright
 
-# Local in-memory cache (fastest)
+# Local in-memory cache
 _cache = {}
 
 # Redis client (shared across processes, survives restarts)
