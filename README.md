@@ -200,7 +200,7 @@ I’ll be actively improving Synthron with:
 
 - ✨ More exciting features and enhancements
 - 🛠️ Integration of modern **DevOps tooling and workflows**
-- 🐳 **Containerization** using Docker
+- 🐳 **Containerization** using Docker ✅
 - ⚙️ Implementation of **CI/CD pipelines**
 - 🚀 **Cloud deployment** on **AWS**
 
