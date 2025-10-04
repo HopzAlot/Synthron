@@ -130,7 +130,7 @@ class LlamaGenerateView(APIView):
             return Response({"error": "Prompt is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            result = generate_llama_response(prompt)  # sync llama call
+            result = generate_llama_response(prompt)
             return Response({"response": result}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
