@@ -8,7 +8,7 @@ _cache = {}
 
 # Redis client (shared across processes, survives restarts)
 try:
-    redis_client = redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
+    redis_client = redis.Redis(host="redis", port=6379, db=0, decode_responses=True)
     redis_client.ping()
     USE_REDIS= True
 except Exception as e:
