@@ -1,7 +1,7 @@
 #environment
 .env
-__pycache__
-./api/__pycache__
-./api/agents/__pycache__
+__pycache__/
+./api/__pycache__/
+./api/agents/__pycache__/
 
 
