@@ -2,7 +2,7 @@
 
 **Synthron** is a full-stack web application that helps users intelligently build custom PC configurations based on their needs (gaming, editing, budget, etc.) using a combination of AI prompt parsing and real-time price scraping from trusted websites.
 
-The system uses **React** for the frontend and **Django + Django REST Framework** on the backend, connected via REST APIs. It uses an **LLM (LLaMA 3.2)** locally to interpret user prompts, and **Playwright** for dynamic scraping of part prices and availability.
+The system uses **React** for the frontend and **Django + Django REST Framework** on the backend, connected via REST APIs.**PostgreSQL** is used to store User's data and **Redis** acts as a cache system to temporarily store the results for faster accessibility. It uses an **LLM (LLaMA 3.2)** locally to interpret user prompts, and **Playwright** for dynamic scraping of part prices and availability.
 
 > 🔍 Currently achieving **70–75% scraping predictability/accuracy**. Further improvements are planned.
 
