@@ -385,7 +385,7 @@ export default function App() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col items-center p-6 text-gray-100">
       <div className="w-full max-w-3xl flex justify-between items-center mb-6">
         <h1 className="text-4xl font-extrabold select-none text-indigo-400 drop-shadow-lg">
-          🤖 AI PC Builder
+          🤖 Synthron
         </h1>
         <button
           onClick={handleLogout}
