@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center my-8">
@@ -455,9 +457,11 @@ export default function App() {
               <h2 className="text-2xl font-semibold text-indigo-400">
                 🧾 Build Summary
               </h2>
-              <pre className="whitespace-pre-wrap text-gray-300 leading-relaxed">
-                {summary}
-              </pre>
+              <div className="prose prose-invert max-w-full text-gray-300">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {summary}
+                </ReactMarkdown>
+              </div>
 
               {total !== null && (
                 <p className="text-indigo-300 font-bold text-lg">
@@ -515,9 +519,11 @@ export default function App() {
                   <p className="text-indigo-300 font-semibold">
                     {new Date(entry.created_at).toLocaleString()}
                   </p>
-                  <pre className="whitespace-pre-wrap text-gray-300 mt-2">
-                    {entry.summary || "No summary available."}
-                  </pre>
+                  <div className="prose prose-invert max-w-full text-gray-300 mt-2">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {entry.summary || "No summary available."}
+                    </ReactMarkdown>
+                  </div>
                 </li>
               ))}
             </ul>

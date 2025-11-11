@@ -97,8 +97,13 @@ def fetch_price_and_url(url):
         try:
             page.route("**/*.{png,jpg,jpeg,css,js,woff2,woff,svg,eot}", lambda route: route.abort())
             page.goto(url, timeout=10000, wait_until="domcontentloaded")
-            page.wait_for_selector('[class*="price"], [id*="price"]', timeout=10000)
+            # page.wait_for_selector('[class*="price"], [id*="price"]', timeout=5000)
+            page.mouse.wheel(0, 2000)
+            page.wait_for_timeout(1000)
             raw_price = extract_price_and_url(page)
+            if not raw_price:
+                page.wait_for_timeout(1500)
+                raw_price = extract_price_and_url(page)
             parsed_price = parse_price(raw_price)
             result = {"url": url, "price": parsed_price}
 

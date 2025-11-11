@@ -57,17 +57,24 @@ def find_product_urls(query: str) -> dict:
             res.raise_for_status()
             data = res.json()
 
+        # get all links from SERPER results
         all_links = extract_links(data)
-        trusted_links = [url for url in all_links if is_trusted_url(url)]
-        trusted_links = list(dict.fromkeys(trusted_links))[:3]
+        all_links = list(dict.fromkeys(all_links))[:10]  # remove duplicates, limit to top 10
 
-        if not trusted_links:
+        if not all_links:
             return {"url": None, "price": None}
 
-        scraped = scrape_urls(trusted_links)
-        best_result = get_best_in_stock(scraped)
+        # scrape all links and keep only the ones with a valid price
+        scraped_results = scrape_urls(all_links)
+        valid_results = [r for r in scraped_results if r.get("price") is not None]
 
-        return best_result or {"url": trusted_links[0], "price": None}
+        if not valid_results:
+            # fallback: return first scraped result even if price is None
+            return scraped_results[0] if scraped_results else {"url": None, "price": None}
+
+        # pick the one with lowest price
+        best_result = min(valid_results, key=lambda x: x["price"])
+        return best_result
 
     except Exception as e:
         print("❌ Error in find_product_urls:", str(e))
