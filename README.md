@@ -1,4 +1,4 @@
-# 🛠️ Synthron – Custom PC Recommendation Platform
+## 🛠️ Synthron – Custom PC Recommendation Platform
 
 **Synthron** is a full-stack web application that helps users intelligently build custom PC configurations based on their needs (gaming, editing, budget, etc.) using a combination of AI prompt parsing and real-time price scraping from trusted websites.
 
@@ -6,7 +6,10 @@ The system uses **React** for the frontend and **Django + Django REST Framework*
 
 > 🔍 Currently achieving **70–75% scraping predictability/accuracy**. Further improvements are planned.
 
+
 ---
+
+
 
 ## ✨ Features
 
@@ -57,6 +60,9 @@ ai-pc-builder/
 │   ├── package.json
 ├── README.md
 └── .gitignore
+└── .env
+└── .docker-compose.yml
+
 ```
 
 ---
@@ -134,14 +140,106 @@ npm install
 ```bash
 npm run start
 ```
+## 🐳 Docker Setup (Recommended)
 
+Synthron is fully containerized. This is the fastest way to get the project running.
+
+### 1. Environment Variables (`.env`)
+Create a `.env` file in the project root:
+
+```env
+COMPOSE_PROJECT_NAME=synthron
+
+# PostgreSQL
+POSTGRES_DB=synthron
+POSTGRES_USER=synthron
+POSTGRES_PASSWORD=synthronpassword
+
+# Django Backend
+DJANGO_SETTINGS_MODULE=config.settings.production
+DJANGO_SECRET_KEY=your-secret-key-here
+DEBUG=false
+ALLOWED_HOSTS=*
+
+DATABASE_URL=postgres://synthron:synthronpassword@postgres:5432/synthron
+REDIS_URL=redis://redis:6379/0
+OLLAMA_BASE_URL=http://ollama:11434
+
+# Frontend
+VITE_API_BASE_URL=http://localhost:8000
+```
 ---
+## ⚓ Docker-Compose File
+   Make a docker-compose.yml file in your project directory and attach the code below.
+
+   ``` dockercompose
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [synthron-net]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks: [synthron-net]
+
+  ollama:
+    image: ollama/ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks: [synthron-net]
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: [.env]
+    depends_on:
+      - postgres
+      - redis
+      - ollama
+    ports:
+      - "8000:8000"
+    networks: [synthron-net]
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    env_file: [.env]
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks: [synthron-net]
+
+volumes:
+  postgres_data:
+  ollama_data:
+
+networks:
+  synthron-net:
+    driver: bridge
+   ```
+---
+
 
 ## ⚠️ LLaMA 3.2 Usage
 
 Synthron uses **LLaMA 3.2 locally** for AI prompt parsing.  
-To fully use the project, you'll need to **download and run the LLaMA 3.2 model** locally.  
-Refer to the `llama.py` script for how it's integrated, and ensure your machine meets the requirements for running LLaMA models.
+   - **Docker Users**: Handled automatically via the ollama service.  
+      
+   - **Manual Users**: Install Ollama and run ollama pull llama3.2.
 
 ---
 
@@ -200,7 +298,6 @@ I’ll be actively improving Synthron with:
 
 - ✨ More exciting features and enhancements
 - 🛠️ Integration of modern **DevOps tooling and workflows**
-- 🐳 **Containerization** using Docker ✅
 - ⚙️ Implementation of **CI/CD pipelines**
 - 🚀 **Cloud deployment** on **AWS**
 
@@ -211,4 +308,4 @@ I’ll be actively improving Synthron with:
 Contact me on my email:
 rehansaqib2006@gmail.com
 
-Feel free to open an issue or PR!
+Feel free to open an issue or PR!**
