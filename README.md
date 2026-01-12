@@ -308,4 +308,4 @@ I’ll be actively improving Synthron with:
 Contact me on my email:
 rehansaqib2006@gmail.com
 
-Feel free to open an issue or PR!**
+**Feel free to open an issue or PR!**
