@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 
 DEBUG = os.getenv('DEBUG', 'False').lower() in ['true', '1']
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 
 # Application definition
 INSTALLED_APPS = [
@@ -68,6 +68,11 @@ ROOT_URLCONF = 'urls'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = [
+    "https://synthron-frontend.onrender.com",
+    "https://synthron-backend.onrender.com",
+]
+
 SESSION_COOKIE_SAMESITE = 'Lax'
 
 TEMPLATES = [
