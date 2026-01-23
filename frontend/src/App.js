@@ -115,6 +115,11 @@ function ComponentCard({ title, component }) {
   );
 }
 
+// ---------------------- NEW: BACKEND URL CONFIG ----------------------
+const BACKEND_URL =
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:8000";
+// --------------------------------------------------------------------
+
 function AuthForm({ onLoginSuccess }) {
   const [isRegister, setIsRegister] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -141,8 +146,8 @@ function AuthForm({ onLoginSuccess }) {
     setLoading(true);
 
     const url = isRegister
-      ? "http://localhost:8000/api/register/"
-      : "http://localhost:8000/api/login/";
+      ? `${BACKEND_URL}/api/register/`
+      : `${BACKEND_URL}/api/login/`;
 
     try {
       const res = await fetch(url, {
@@ -244,7 +249,7 @@ export default function App() {
     async function checkAuth() {
       try {
         setAuthLoading(true);
-        const res = await fetch("http://localhost:8000/api/refresh/", {
+        const res = await fetch(`${BACKEND_URL}/api/refresh/`, {
           method: "POST",
           credentials: "include",
         });
@@ -269,7 +274,7 @@ export default function App() {
   async function fetchHistory() {
     setLoadingHistory(true);
     try {
-      const res = await fetch("http://localhost:8000/api/history/", {
+      const res = await fetch(`${BACKEND_URL}/api/history/`, {
         method: "GET",
         credentials: "include",
       });
@@ -290,7 +295,7 @@ export default function App() {
   const handleLogout = async () => {
     try {
       setAuthLoading(true);
-      const res = await fetch("http://localhost:8000/api/logout/", {
+      const res = await fetch(`${BACKEND_URL}/api/logout/`, {
         method: "POST",
         credentials: "include",
       });
@@ -333,7 +338,7 @@ export default function App() {
     setIssues([]);
 
     try {
-      const response = await fetch("http://localhost:8000/api/configure/", {
+      const response = await fetch(`${BACKEND_URL}/api/configure/`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
