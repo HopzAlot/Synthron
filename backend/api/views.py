@@ -96,11 +96,8 @@ class GetDataView(APIView):
 
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class CsrfExemptAPIView(APIView):
-    pass
-
-class ConfigureBuildView(CsrfExemptAPIView):
+@method_decorator(csrf_exempt, name="dispatch")
+class ConfigureBuildView(APIView):
     permission_classes=[IsAuthenticated]
     def post(self, request):
         prompt = request.data.get("prompt")
