@@ -69,7 +69,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_TRUSTED_ORIGINS = [
-    "https://synthron-frontend.onrender.com",
+    "https://synthron-ty19.onrender.com/",
     "https://synthron-backend.onrender.com",
 ]
 
