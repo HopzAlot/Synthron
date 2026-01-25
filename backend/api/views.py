@@ -10,6 +10,8 @@ from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class RegisterView(APIView):
     permission_classes=[AllowAny]
@@ -93,7 +95,12 @@ class GetDataView(APIView):
         return Response(serializer.data)
 
 
-class ConfigureBuildView(APIView):
+
+@method_decorator(csrf_exempt, name='dispatch')
+class CsrfExemptAPIView(APIView):
+    pass
+
+class ConfigureBuildView(CsrfExemptAPIView):
     permission_classes=[IsAuthenticated]
     def post(self, request):
         prompt = request.data.get("prompt")

@@ -67,13 +67,13 @@ ROOT_URLCONF = 'urls'
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'None'
 CSRF_TRUSTED_ORIGINS = [
     "https://synthron-ty19.onrender.com/",
     "https://synthron-backend.onrender.com",
 ]
 
-SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'None'
 
 TEMPLATES = [
     {
