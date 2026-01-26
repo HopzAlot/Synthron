@@ -29,64 +29,45 @@ class RegisterView(APIView):
         return Response({'message': 'User created Successfully'}, status=status.HTTP_201_CREATED)
 
 class LoginView(APIView):
-    permission_classes=[AllowAny]
-    def post(self,request):
-        username=request.data.get('username')
-        password=request.data.get('password')
-        user=authenticate(username=username, password=password)
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
         if not user:
-            return Response({'error': 'Invalid Credentials'}, status=401)
-        
-        refresh=RefreshToken.for_user(user)
-        response=Response({'message': 'Login Successful'})
-        
-        #Setting JWT tokkens in HTTPOnly Cokkies:
+            return Response({'error': 'Invalid credentials'}, status=401)
 
-        response.set_cookie('access', str(refresh.access_token), httponly=True, secure=True, samesite='Lax', max_age=300)
-        response.set_cookie('refresh',str(refresh), httponly=True, secure=True, samesite='Lax', max_age=604800)
-        return response
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+        }, status=200)
+
 class RefreshTokenView(APIView):
-    permission_classes=[AllowAny]
-    def post(self,request):
-        refresh_token=request.COOKIES.get('refresh')
-        if refresh_token is None:
-              return Response({'error': 'No refresh token found in cookies'}, status=status.HTTP_400_BAD_REQUEST)
-        try:
-            refresh=RefreshToken(refresh_token)
-            response = Response({'message': 'Token refreshed successfully'})
-            response.set_cookie(
-                'access',
-                str(refresh.access_token),
-                httponly=True,
-                secure=True,
-                samesite='Lax',
-                max_age=300
-            )
-            return response
+    permission_classes = [AllowAny]
 
-        except Exception as e:
-            return Response({'error': 'Invalid refresh token'}, status=status.HTTP_401_UNAUTHORIZED)
+    def post(self, request):
+        refresh_token = request.data.get("refresh")
+        if not refresh_token:
+            return Response({"error": "Refresh token required"}, status=400)
+
+        try:
+            refresh = RefreshToken(refresh_token)
+            return Response({
+                "access": str(refresh.access_token)
+            })
+        except Exception:
+            return Response({"error": "Invalid refresh token"}, status=401)
+
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        refresh_token = request.COOKIES.get('refresh')
-        response = Response({'message': 'Logged out successfully'})
+        return Response({"message": "Logged out"})
 
-        if refresh_token is not None:
-            try:
-                token = RefreshToken(refresh_token)
-                token.blacklist()  # Blacklist the refresh token
-            except Exception:
-                # Token may be invalid or already blacklisted, ignore errors
-                pass
-
-        # Delete the JWT cookies
-        response.delete_cookie('access')
-        response.delete_cookie('refresh')
-
-        return response
-    
 class GetDataView(APIView):
     permission_classes=[AllowAny]
     def get(self, request):
