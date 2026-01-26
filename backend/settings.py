@@ -65,15 +65,21 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'urls'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CCORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "https://synthron-ty19.onrender.com/",
+]
 CSRF_COOKIE_SAMESITE = 'None'
 CSRF_TRUSTED_ORIGINS = [
-    "https://synthron-ty19.onrender.com/",
-    "https://synthron-backend.onrender.com",
+    "https://synthron-ty19.onrender.com/"
 ]
 
 SESSION_COOKIE_SAMESITE = 'None'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 TEMPLATES = [
     {

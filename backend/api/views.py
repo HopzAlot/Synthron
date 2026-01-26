@@ -100,6 +100,8 @@ class GetDataView(APIView):
 class ConfigureBuildView(APIView):
     permission_classes=[IsAuthenticated]
     def post(self, request):
+        print("USER:", request.user)
+        print("AUTH:", request.auth)
         prompt = request.data.get("prompt")
         if not prompt:
             return Response({"error": "Prompt is required"}, status=status.HTTP_400_BAD_REQUEST)
